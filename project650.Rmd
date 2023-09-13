@@ -1,0 +1,80 @@
+---
+title: "Stat650"
+author: "Jessica Grover"
+date: "2022-09-29"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+
+
+
+```{r}
+
+data<- read.csv("prices_split_adjusted.csv")
+data
+```
+```{r}
+str(unique(data$symbol))
+```
+
+
+
+
+```{r}
+glimpse(data)
+```
+
+```{r}
+data$date[1:500]
+data$date <- ymd(data$date)
+class(data$date)
+```
+
+```{r}
+p <- ymd_hms(data$date)
+class(p)
+```
+```{r}
+data2<-data[1:500,]
+data2
+```
+
+
+```{r}
+data1<-filter(data, symbol %in% c("WLTW","MAR","AAL"))
+```
+
+```{r}
+s <- tibble(
+date = date(data2$date),
+month= month(data2$date, label = T),
+wday = wday(data2$date, label = T),
+
+)
+s
+```
+
+```{r}
+ggplot(s,aes(month))+ geom_bar()
+```
+```{r}
+d <- s %>%
+group_by(date) %>%
+summarize(count = n())
+d
+```
+
+
+
+
+```{r}
+ggplot(d,aes(x=date,y=count)) + geom_line(size=0.3)
+
+```
+
+
